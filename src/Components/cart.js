@@ -29,16 +29,56 @@ class Cart extends React.Component {
         },
       ],
     };
-    // this.increaseQuantity = this.increaseQuantity.bind(this);
-    // this.testing();
   }
+
+  // Function To handle the Decrese Quantity
+  // this file is based on cart item Decrease method
+  handleDecreaseQuantity = (product) => {
+    console.log("Please Decrease the Quantity", product);
+    const { products } = this.state;
+    let index = products.indexOf(product);
+
+    // Logical Implementation
+    products[index].qty -= 1;
+    if (products[index].qty <= 0) {
+      // Remove the item from the cart
+      products.splice(index, 1);
+      alert(
+        "The quantity of " +
+          product.title +
+          " has reached zero and has been removed from your Cart"
+      );
+    }
+
+    // Update the state
+    this.setState({ products: [...products] });
+  };
+
+  // This file is loced in the function of HandleIncrese quantity
+  handleIncreaseQuantity = (product) => {
+    console.log("Please Increase the quantity", product);
+    const { products } = this.state;
+    const index = products.indexOf(product);
+
+    // Finding the leap index
+    products[index].qty += 1;
+    this.setState({
+      products: [...products],
+    });
+  };
+
   render() {
     const { products } = this.state;
     return (
       <div className="cart">
-        {products.map((product) => {
-          return <CartItem product={product} key={product.id} />;
-        })}
+        {products.map((product) => (
+          <CartItem
+            product={product}
+            key={product.id}
+            onDecreaseQuantity={this.handleDecreaseQuantity}
+            onIncreaseQuantity={this.handleIncreaseQuantity}
+          />
+        ))}
       </div>
     );
   }
